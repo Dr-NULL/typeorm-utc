@@ -9,6 +9,7 @@ export interface Struct {
   encrypt: boolean;
   syncronize: boolean;
   logging: boolean;
+  timezone?: string,
   entities: string[];
   migrations?: string[];
   cli?: {

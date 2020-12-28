@@ -11,6 +11,7 @@ export const init: Struct[] = [
     encrypt: false,
     syncronize: false,
     logging: false,
+    timezone: 'Z',
     entities: [
       "dist/models/**/*.entity.js"
     ],

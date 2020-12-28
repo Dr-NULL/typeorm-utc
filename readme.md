@@ -10,7 +10,7 @@ This is an example project to demostrate an issue with the date writing in typeo
 - UTC -3
 
 ## The Problem:
-- When you stores some dates with time `"00:00:00"`, TypeORM inserts that date with a incorrect day. For example, this date `"2020-12-02T03:00:00.000Z"` appears in the database as `"2020-12-01T03:00:00.000Z"`.
+- When you stores some dates with time `"00:00:00"`, TypeORM inserts that date with a incorrect day. For example, this date `"2020-12-02T00:00:00.000Z"` appears in the database as `"2020-12-01T00:00:00.000Z"`.
 
 ## Deploy:
 - Execute these commands in your terminal:
