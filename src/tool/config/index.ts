@@ -1,0 +1,1 @@
+export { OrmConfig } from './ormconfig';
