@@ -15,10 +15,7 @@ describe.only('Testing UTC date insertion issues:', () => {
 
     it('Clear "DateTest" table', async function() {
         this.timeout(90000);
-        const items = await DateTest.find();
-        for (const item of items) {
-            await item.remove();
-        }
+        await DateTest.clear();
 
         const count = await DateTest.count();
         assert.strictEqual(count, 0);
@@ -61,7 +58,10 @@ describe.only('Testing UTC date insertion issues:', () => {
                     date = new Date(ms);
 
                     const item = data.shift();
-                    assert.strictEqual(item.date.toJSON(), date.toJSON());
+                    assert.strictEqual(
+                        item.date.toJSON(),
+                        date.toJSON()
+                    );
                 }
             }
         }
