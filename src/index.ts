@@ -1,18 +1,33 @@
-import { OrmConfig } from './tool/config';
+import { createConnection } from 'typeorm';
+import { JsonFile } from './app/json-file';
 
-// Check ormconfig.json existence
-async function main() {
-    const conf = new OrmConfig();
-    if (await conf.exists) {
-        console.log('The file it\'s already created. Execute "npm test" for initialize the mocha tests.');
-    } else {
-        console.log('Creating the "ormconfig.json" file. Please wait...');
-        await conf.new();
-        console.log('File created, now check the file configuration, and later, execute "npm test" for initialize the mocha tests.');
+(async () => {
+    try {
+        console.clear();
+        const json = new JsonFile('./ormconfig.json');
+        console.log('[ EV ] -> Searching "ormconfig.json"');
+    
+        if (await json.exists()) {
+            // Connect to database and syncronize the model
+            console.log('[ OK ] -> File found!\n');
+            console.log('[ EV ] -> Synchronizing models...');
+            const conn = await createConnection();
+            await conn.synchronize(true);
+
+            console.log('[ OK ] -> Synchronization complete!');
+            console.log('          Now execute "npm run start" for initialize the issue testing.');
+        } else {
+            // Create a new file
+            console.log('[FAIL] -> File not found!\n');
+            console.log('[ EV ] -> Generating a new "ormconfig.json"...');
+            await json.generate();
+            console.log('[ OK ] -> File creation complete!');
+            console.log('          Now config your "ormconfig.json and execute "npm run config" again.');
+        }
+    } catch (err) {
+        console.log('[FAIL] -> ERROR DETECTED:');
+        console.log('         ', err.message);
     }
 
     process.exit();
-}
-
-// Initialize
-main();
+})();

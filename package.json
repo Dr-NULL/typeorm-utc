@@ -1,23 +1,28 @@
 {
-  "name": "typeorm-utc",
-  "version": "0.0.1",
-  "description": "Test issues with date",
-  "main": "./dist/index.js",
+  "name": "utc-typeorm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "rmdir .\\\\dist /s /q && tsc && cls && mocha ./dist/**/*.test.js"
+    "test": "mocha --require ts-node/register ./src/**/*.test.ts",
+    "start": "mocha --require ts-node/register ./src/test.ts",
+    "setup": "ts-node ./src"
   },
-  "author": "Dr-NULL",
+  "keywords": [],
+  "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.2.14",
-    "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.16",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "typescript": "^4.1.3"
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^15.12.4",
+    "chai": "^4.3.4",
+    "mocha": "^9.0.1",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
   },
   "dependencies": {
-    "mssql": "^6.3.0",
-    "typeorm": "^0.2.29"
+    "mssql": "^7.1.3",
+    "typeorm": "^0.2.34"
   }
 }
