@@ -1,5 +1,5 @@
 import { Connection, createConnection } from "typeorm";
-import { History } from '../entities/history.entity';
+import { History } from './entities/history.entity';
 import { assert } from "chai";
 
 describe('Test Issue #7225', () => {
@@ -24,8 +24,8 @@ describe('Test Issue #7225', () => {
             const time = start + (i * 60000);
             const item = new History();
             
-            item.dateRaw = new Date(time);
-            item.dateFix = new Date(time);
+            item.dateRaw = new Date(time);  // A date without manipulation
+            item.dateFix = new Date(time);  // A date fixed with a custom decorator on the property
             await item.save();
         }
     });
