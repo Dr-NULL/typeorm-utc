@@ -22,7 +22,7 @@ import { JsonFile } from './app/json-file';
             console.log('[ EV ] -> Generating a new "ormconfig.json"...');
             await json.generate();
             console.log('[ OK ] -> File creation complete!');
-            console.log('          Now config your "ormconfig.json and execute "npm run config" again.');
+            console.log('          Now config your "ormconfig.json and execute "npm run setup" again.');
         }
     } catch (err) {
         console.log('[FAIL] -> ERROR DETECTED:');
