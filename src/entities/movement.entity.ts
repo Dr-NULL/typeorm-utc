@@ -1,0 +1,13 @@
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity({ name: 'Movement' })
+export class Movement extends BaseEntity {
+    @PrimaryGeneratedColumn({ type: 'int' })
+    id: number;
+
+    @Column({ type: 'datetime' })
+    date: Date;
+    
+    @Column({ type: 'varchar' })
+    json: string;
+}
