@@ -11,20 +11,23 @@ import { AfterInsert, AfterUpdate, BeforeInsert, BeforeUpdate } from "typeorm";
 export function DateFix7225(): PropertyDecorator
 export function DateFix7225(date: Date): Date
 export function DateFix7225(date?: Date): Date | PropertyDecorator {
-    if (date) { 
+    function mutator(input: Date, after?: boolean): Date {
         // Convert date
-        const hh = date.getHours();
-        const mm = date.getMinutes();
-        const ss = date.getSeconds();
-        const ms = date.getMilliseconds();
+        const hh = input.getHours();
+        const mm = input.getMinutes();
+        const ss = input.getSeconds();
+        const ms = input.getMilliseconds();
     
         if (!hh && !mm && !ss && !ms) {
             const add = 60000 * 60 * 24;
-            return new Date(date.getTime() - add);
+            const rev = !after ? 1 : -1;
+            return new Date(input.getTime() + (add * rev));
         } else {
-            return date;
+            return input;
         }
-    } else {
+    }
+
+    if (!(date instanceof Date)) {
         // Return the decorator
         return (target: any, propertyKey: string | symbol) => {
             const methodBefore = `${propertyKey.toString()}BeforeDML`;
@@ -33,30 +36,14 @@ export function DateFix7225(date?: Date): Date | PropertyDecorator {
             // Execute before DML
             target[methodBefore] = function() {
                 if (this[propertyKey] instanceof Date) {
-                    const hh = this[propertyKey].getHours();
-                    const mm = this[propertyKey].getMinutes();
-                    const ss = this[propertyKey].getSeconds();
-                    const ms = this[propertyKey].getMilliseconds();
-
-                    if (!hh && !mm && !ss && !ms) {
-                        const add = 60000 * 60 * 24;
-                        this[propertyKey] = new Date(this[propertyKey].getTime() + add);
-                    }
+                    this[propertyKey] = mutator(this[propertyKey], false);
                 }
             }
 
             // Execute after DML 
             target[methodAfter] = function() {
                 if (this[propertyKey] instanceof Date) {
-                    const hh = this[propertyKey].getHours();
-                    const mm = this[propertyKey].getMinutes();
-                    const ss = this[propertyKey].getSeconds();
-                    const ms = this[propertyKey].getMilliseconds();
-
-                    if (!hh && !mm && !ss && !ms) {
-                        const add = 60000 * 60 * 24;
-                        this[propertyKey] = new Date(this[propertyKey].getTime() - add);
-                    }
+                    this[propertyKey] = mutator(this[propertyKey], true);
                 }
             }
 
@@ -66,5 +53,8 @@ export function DateFix7225(date?: Date): Date | PropertyDecorator {
             AfterInsert()(target, methodAfter);
             AfterUpdate()(target, methodAfter);
         };
+    } else {
+        // Converts inmediatly the date
+        return mutator(date);
     }
 };
